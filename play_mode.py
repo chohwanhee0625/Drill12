@@ -32,8 +32,20 @@ def init():
 
     boy = Boy()
     game_world.add_object(boy, 1)
+    game_world.add_collision_pair('boy:ball', boy, None)
+    game_world.add_collision_pair('boy:zombie', boy, None)
 
     # fill here
+    # 공을 바닥에 30개 뿌린다
+    balls = [Ball(random.randint(100, 1500), 60, 0) for _ in range(30)]
+    game_world.add_objects(balls, 1)
+    for ball in balls:
+        game_world.add_collision_pair('boy:ball', None, ball)
+
+    zombies = [Zombie() for _ in range(5)]
+    game_world.add_objects(zombies, 1)
+    for zombie in zombies:
+        game_world.add_collision_pair('boy:zombie', None, zombie)
 
 
 
@@ -44,7 +56,12 @@ def finish():
 
 def update():
     game_world.update()
+    game_world.handle_collisions()
     # fill here
+    # for ball in balls:
+    #     if game_world.collide(boy, ball):
+    #         print('COLLISION boy:ball')
+
 
 def draw():
     clear_canvas()
