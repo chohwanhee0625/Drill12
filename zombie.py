@@ -4,6 +4,8 @@ import game_framework
 
 from pico2d import *
 
+import game_world
+
 # zombie Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -32,6 +34,7 @@ class Zombie:
         self.load_images()
         self.frame = random.randint(0, 9)
         self.dir = random.choice([-1,1])
+        self.dammge = 0
 
 
     def update(self):
@@ -42,14 +45,16 @@ class Zombie:
         elif self.x < 800:
             self.dir = 1
         self.x = clamp(800, self.x, 1600)
+        if self.dammge == 200:
+            game_world.remove_object(self)
         pass
 
 
     def draw(self):
         if self.dir < 0:
-            Zombie.images['Walk'][int(self.frame)].composite_draw(0, 'h', self.x, self.y, 200, 200)
+            Zombie.images['Walk'][int(self.frame)].composite_draw(0, 'h', self.x, self.y, 200-self.dammge, 200-self.dammge)
         else:
-            Zombie.images['Walk'][int(self.frame)].draw(self.x, self.y, 200, 200)
+            Zombie.images['Walk'][int(self.frame)].composite_draw(0, '', self.x, self.y, 200-self.dammge, 200-self.dammge)
         draw_rectangle(*self.get_bb())
 
 
@@ -64,4 +69,5 @@ class Zombie:
             game_framework.quit()
             pass
         if group == 'ball:zombie':
-            pass
+            print('zombie attack')
+            self.dammge += 100

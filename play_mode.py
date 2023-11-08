@@ -41,7 +41,6 @@ def init():
     game_world.add_objects(balls, 1)
     for ball in balls:
         game_world.add_collision_pair('boy:ball', None, ball)
-        game_world.add_collision_pair('ball:zombie', ball, None)
 
 
     zombies = [Zombie() for _ in range(5)]
